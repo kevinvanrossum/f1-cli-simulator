@@ -82,7 +82,19 @@ enum Commands {
     },
     
     /// Update the local database of F1 race data
-    Update,
+    Update {
+        /// Number of previous seasons to fetch (in addition to current season)
+        #[arg(short, long)]
+        previous: Option<u32>,
+        
+        /// Specific comma-separated seasons to fetch (e.g., "2010,2015,2020")
+        #[arg(short, long)]
+        seasons: Option<String>,
+        
+        /// Fetch all historical seasons (from 1950 to current)
+        #[arg(short, long)]
+        all: bool,
+    },
 }
 
 fn main() -> Result<()> {
@@ -119,9 +131,9 @@ fn main() -> Result<()> {
             }
             data::list_available_data(season)
         },
-        Commands::Update => {
+        Commands::Update { previous, seasons, all } => {
             println!("Updating F1 race data...");
-            data::update_data()
+            data::update_data(previous, seasons, all)
         },
     }
 }

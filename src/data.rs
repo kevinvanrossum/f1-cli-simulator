@@ -147,16 +147,60 @@ pub fn list_available_data(filter_season: Option<u32>) -> Result<()> {
     Ok(())
 }
 
+/// Determine which F1 seasons to fetch based on provided options
+fn determine_seasons_to_fetch(
+    previous: Option<u32>, 
+    specific_seasons: Option<String>, 
+    all: bool,
+    current_season: u32
+) -> Vec<u32> {
+    if all {
+        // Return all seasons from 1950 to current
+        return (1950..=current_season).collect();
+    }
+    
+    if let Some(specific) = specific_seasons {
+        // Parse and return specific seasons
+        return specific
+            .split(',')
+            .filter_map(|s| s.trim().parse::<u32>().ok())
+            .collect();
+    }
+    
+    if let Some(prev_count) = previous {
+        // Return current season and specified number of previous seasons
+        let start_season = current_season.saturating_sub(prev_count);
+        return (start_season..=current_season).collect();
+    }
+    
+    // Default behavior - current and last 2 seasons
+    vec![current_season - 2, current_season - 1, current_season]
+}
+
 /// Update F1 race data from the Ergast API
-pub fn update_data() -> Result<()> {
+pub fn update_data(
+    previous: Option<u32>,
+    specific_seasons: Option<String>,
+    all: bool
+) -> Result<()> {
     ensure_data_dir()?;
     
     let client = Client::new();
     
     println!("{}", "Updating F1 race data...".green());
     
-    // Fetch data for last few seasons and current season
-    let seasons_to_fetch = vec![CURRENT_SEASON - 2, CURRENT_SEASON - 1, CURRENT_SEASON];
+    // Determine which seasons to fetch based on provided options
+    let seasons_to_fetch = determine_seasons_to_fetch(previous, specific_seasons, all, CURRENT_SEASON);
+    
+    println!("{} {}", 
+        "Seasons to fetch:".blue(),
+        seasons_to_fetch.iter()
+            .map(|s| s.to_string())
+            .collect::<Vec<_>>()
+            .join(", ")
+            .blue()
+            .bold()
+    );
     
     for season in seasons_to_fetch {
         println!("\n{} {}", "Fetching data for season".blue(), season.to_string().blue().bold());

@@ -62,6 +62,9 @@ f1-cli-simulator --help
 
 #### `update`
 Downloads F1 data from the Ergast API.
+- `--previous <NUMBER>`, `-p <NUMBER>`: Number of previous seasons to fetch (in addition to current season)
+- `--seasons <LIST>`, `-s <LIST>`: Specific comma-separated seasons to fetch (e.g., "2010,2015,2020")
+- `--all`, `-a`: Fetch all historical seasons (from 1950 to current)
 
 #### `list`
 Lists available race data.
@@ -119,7 +122,17 @@ f1-cli-simulator simulate --gp monza --season 2025 --reliability 1.2 --no-incide
 ### Update the local F1 data cache
 
 ```bash
+# Update with default settings (current season + 2 previous seasons)
 f1-cli-simulator update
+
+# Update with specific number of previous seasons
+f1-cli-simulator update --previous 5
+
+# Update with specific seasons only
+f1-cli-simulator update --seasons "2010,2015,2020"
+
+# Update with all historical F1 data from 1950 to current season
+f1-cli-simulator update --all
 ```
 
 ## Data Sources
