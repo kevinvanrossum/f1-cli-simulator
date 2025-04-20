@@ -30,6 +30,10 @@ enum Commands {
         /// Session type: "practice", "qualifying", or "race"
         #[arg(short = 't', long, default_value = "race")]
         session: String,
+        
+        /// Run in interactive mode (lap-by-lap playback)
+        #[arg(short, long)]
+        interactive: bool,
     },
     
     /// Simulate an upcoming F1 race using predictive modeling
@@ -104,9 +108,11 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     
     match cli.command {
-        Commands::Historical { season, gp, session } => {
-            println!("Simulating historical {} session for {} GP {}", session, gp, season);
-            simulator::historical::simulate(season, &gp, &session)
+        Commands::Historical { season, gp, session, interactive } => {
+            println!("Simulating historical {} session for {} GP {}{}", 
+                     session, gp, season, 
+                     if interactive { " in interactive mode" } else { "" });
+            simulator::historical::simulate(season, &gp, &session, interactive)
         },
         Commands::Predict { season, gp, runs } => {
             println!("Predicting {} GP {} with {} simulation runs", gp, season, runs);
