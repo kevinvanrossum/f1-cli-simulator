@@ -349,12 +349,11 @@ pub fn update_fastest_lap(
 fn display_lap_summary(
     drivers: &[Driver],
     positions: &Vec<(usize, f64, Duration, bool)>,
-    lap: u32,
+    _lap: u32,
     dnf_drivers: &Vec<usize>,
     fastest_lap: Option<(usize, Duration)>
 ) {
     // Skip unused variable warnings by using underscore prefix
-    let _lap = lap;
     let _dnf_drivers = dnf_drivers; // Not directly used in this function
     
     // Show top 5 positions

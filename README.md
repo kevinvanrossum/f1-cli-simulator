@@ -75,6 +75,7 @@ Shows historical race data.
 - `--gp <NAME>`, `-g <NAME>`: Grand Prix name (e.g., "monza", "monaco", "spa")
 - `--season <YEAR>`, `-s <YEAR>`: Season year
 - `--session <TYPE>`, `-t <TYPE>`: Session type ("race", "qualifying", "practice", "fp1", "fp2" or "fp3")
+- `--interactive`, `-i`: Run in interactive mode with lap-by-lap race playback
 
 #### `predict`
 Runs multiple race simulations to predict outcomes.
@@ -117,6 +118,14 @@ f1-cli-simulator simulate --gp spa --season 2025 --interactive --weather 0.8
 
 ```bash
 f1-cli-simulator simulate --gp monza --season 2025 --reliability 1.2 --no-incidents
+```
+
+### Experience an interactive playback of a historical race
+
+```bash
+f1-cli-simulator historical --gp monza --season 2023 --interactive
+# or using short options
+f1-cli-simulator historical -g monza -s 2023 -i
 ```
 
 ### Update the local F1 data cache

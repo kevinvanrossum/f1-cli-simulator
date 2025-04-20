@@ -96,7 +96,6 @@ mod tests {
     // Test fetching all historical seasons
     #[test]
     fn test_fetch_all_seasons() {
-        let mock_client = MockClient::new();
         let current_season = 2025;
         
         // Request all historical seasons (true flag)
@@ -144,7 +143,6 @@ mod tests {
     // Test that the 'all' option overrides all other options
     #[test]
     fn test_all_overrides_others() {
-        let mock_client = MockClient::new();
         let current_season = 2025;
         
         // Try to use all options together - 'all' should win

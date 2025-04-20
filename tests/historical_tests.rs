@@ -116,6 +116,7 @@ fn test_simulate_handles_race_session_correctly() {
     let season = 2023;
     let gp = "monza";
     let session = "race";
+    let interactive = false;
     
     // Mock the data module
     let mut data_mock = MockDataModule::new();
@@ -126,7 +127,7 @@ fn test_simulate_handles_race_session_correctly() {
         .returning(move |s, g| Ok(create_mock_race(s, g)));
 
     // Call the simulate function with our mock
-    let result = historical::simulate_with_data_module(season, gp, session, &data_mock);
+    let result = historical::simulate_with_data_module(season, gp, session, interactive, &data_mock);
     
     // Verify the result
     assert!(result.is_ok());
@@ -138,6 +139,7 @@ fn test_simulate_handles_qualifying_session_correctly() {
     let season = 2023;
     let gp = "monza";
     let session = "qualifying";
+    let interactive = false;
 
     // Create mock qualifying results
     let mock_qualifying_results = create_mock_qualifying_results();
@@ -151,7 +153,7 @@ fn test_simulate_handles_qualifying_session_correctly() {
         .returning(move |_, _| Ok(mock_qualifying_results.clone()));
 
     // Call the simulate function with our mock
-    let result = historical::simulate_with_data_module(season, gp, session, &data_mock);
+    let result = historical::simulate_with_data_module(season, gp, session, interactive, &data_mock);
     
     // Verify the result
     assert!(result.is_ok());
@@ -164,6 +166,7 @@ fn test_simulate_handles_practice_session_correctly() {
     let gp = "monza";
     let session = "fp1";
     let practice_number = 1;
+    let interactive = false;
 
     // Create mock practice results
     let mock_practice_results = create_mock_practice_results();
@@ -177,7 +180,7 @@ fn test_simulate_handles_practice_session_correctly() {
         .returning(move |_, _, _| Ok(mock_practice_results.clone()));
 
     // Call the simulate function with our mock
-    let result = historical::simulate_with_data_module(season, gp, session, &data_mock);
+    let result = historical::simulate_with_data_module(season, gp, session, interactive, &data_mock);
     
     // Verify the result
     assert!(result.is_ok());
@@ -189,10 +192,11 @@ fn test_simulate_handles_invalid_session_type() {
     let season = 2023;
     let gp = "monza";
     let invalid_session = "invalid_session";
+    let interactive = false;
     
     // Even with dependency injection, we can test the session validation directly
     let data_mock = MockDataModule::new();
-    let result = historical::simulate_with_data_module(season, gp, invalid_session, &data_mock);
+    let result = historical::simulate_with_data_module(season, gp, invalid_session, interactive, &data_mock);
     
     // Verify that the error is appropriate
     assert!(result.is_err());
@@ -208,6 +212,7 @@ fn test_simulate_race_handles_data_error() {
     let season = 2023;
     let gp = "nonexistent_gp";
     let session = "race";
+    let interactive = false;
     
     // Mock the data module to return an error
     let mut data_mock = MockDataModule::new();
@@ -218,7 +223,7 @@ fn test_simulate_race_handles_data_error() {
         .returning(|_, _| Err(anyhow::anyhow!("Race data not found")));
     
     // Call the simulate function with our mock
-    let result = historical::simulate_with_data_module(season, gp, session, &data_mock);
+    let result = historical::simulate_with_data_module(season, gp, session, interactive, &data_mock);
     
     // Verify that the error is propagated
     assert!(result.is_err());
@@ -233,6 +238,7 @@ fn test_simulate_qualifying_handles_data_error() {
     let season = 2023;
     let gp = "nonexistent_gp";
     let session = "qualifying";
+    let interactive = false;
     
     // Mock the data module to return an error
     let mut data_mock = MockDataModule::new();
@@ -243,7 +249,7 @@ fn test_simulate_qualifying_handles_data_error() {
         .returning(|_, _| Err(anyhow::anyhow!("Qualifying data not found")));
     
     // Call the simulate function with our mock
-    let result = historical::simulate_with_data_module(season, gp, session, &data_mock);
+    let result = historical::simulate_with_data_module(season, gp, session, interactive, &data_mock);
     
     // Verify that the error is propagated
     assert!(result.is_err());
@@ -258,6 +264,7 @@ fn test_simulate_practice_handles_data_error() {
     let season = 2023;
     let gp = "nonexistent_gp";
     let session = "fp1";
+    let interactive = false;
     
     // Mock the data module to return an error
     let mut data_mock = MockDataModule::new();
@@ -268,7 +275,7 @@ fn test_simulate_practice_handles_data_error() {
         .returning(|_, _, _| Err(anyhow::anyhow!("Practice data not found")));
     
     // Call the simulate function with our mock
-    let result = historical::simulate_with_data_module(season, gp, session, &data_mock);
+    let result = historical::simulate_with_data_module(season, gp, session, interactive, &data_mock);
     
     // Verify that the error is propagated
     assert!(result.is_err());
