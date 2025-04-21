@@ -13,6 +13,46 @@ A command-line tool for simulating Formula 1 races and sessions, fetching real F
 - **Data Management**: Download and manage race data for offline use
 - **Rich Terminal Output**: Colored and formatted race results with fastest laps, DNFs and more
 
+## CI/CD and GitHub Actions
+
+This project uses GitHub Actions for continuous integration and delivery. The workflow automatically tests, builds, and releases the application for multiple platforms.
+
+### Automated Processes
+
+- **Testing**: Runs the test suite across Linux, macOS, and Windows.
+- **Building**: Creates optimized release binaries for:
+  - Linux (x86_64 and ARM64)
+  - macOS (x86_64 and ARM64)
+  - Windows (x86_64)
+- **Releasing**: Automatically creates GitHub releases with all platform binaries when a new version is tagged.
+
+### Creating a New Release
+
+To create a new release:
+
+1. Make sure all your changes are committed and pushed to the `main` branch.
+2. Create and push a new tag with a version number:
+   ```bash
+   git tag v0.1.0
+   git push origin v0.1.0
+   ```
+3. The GitHub Actions workflow will automatically:
+   - Run tests across all platforms
+   - Build release binaries for all supported platforms
+   - Create a new GitHub release with the tag name
+   - Attach all binaries to the release
+   - Generate release notes
+
+### Download Prebuilt Binaries
+
+After the release workflow completes, users can download prebuilt binaries directly from the GitHub Releases page instead of building from source.
+
+### Development Workflow
+
+For development:
+1. When you push changes or create a pull request to the `main` branch, the test job will run automatically to ensure code quality.
+2. Check the GitHub Actions tab to see the status of your builds and tests.
+
 ## Installation
 
 ### Prerequisites
